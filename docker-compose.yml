@@ -1,0 +1,29 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://ldic.ie}
+        NEXT_PUBLIC_GA4_ID: ${NEXT_PUBLIC_GA4_ID:-}
+        NEXT_PUBLIC_GSC_VERIFICATION: ${NEXT_PUBLIC_GSC_VERIFICATION:-}
+    image: lucan-web:latest
+    container_name: lucan-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # NEXT_PUBLIC_* are already baked in at build time (see build.args above); repeating
+      # them here is harmless and keeps server-only code reading the same values.
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://ldic.ie}
+      NEXT_PUBLIC_GA4_ID: ${NEXT_PUBLIC_GA4_ID:-}
+      NEXT_PUBLIC_GSC_VERIFICATION: ${NEXT_PUBLIC_GSC_VERIFICATION:-}
+      # Where booking/enquiry submissions are delivered (see .env.example). With neither
+      # set the booking API returns 503 and the UI tells the patient to phone instead.
+      BOOKING_NOTIFY_WEBHOOK: ${BOOKING_NOTIFY_WEBHOOK:-}
+      BOOKING_LOG_FILE: .data/booking-requests.jsonl
+    volumes:
+      # Persists the local booking-request fallback log across container recreates.
+      - booking-data:/app/.data
+
+volumes:
+  booking-data:
