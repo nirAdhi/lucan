@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
-export type Variant = "primary" | "urgent" | "outline" | "ghost" | "light";
+export type Variant = "primary" | "gold" | "urgent" | "outline" | "ghost" | "light";
 export type Size = "sm" | "md" | "lg";
 
 const base =
@@ -9,6 +9,9 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand-700 text-white hover:bg-brand-800",
+  // Reserved for primary booking CTAs (header, hero, footer, mobile bar) - a deliberately
+  // separate accent from brand teal so the "book now" action always stands out the same way.
+  gold: "bg-gold-500 text-ink-900 hover:bg-gold-600",
   urgent: "bg-urgent-600 text-white hover:bg-urgent-700",
   outline: "border border-brand-700 text-brand-800 hover:bg-brand-50",
   ghost: "text-brand-800 hover:bg-brand-50",

@@ -3,6 +3,7 @@ import { cta, site } from "@/content/site";
 import { treatments } from "@/content/treatments";
 import { Container } from "@/components/ui/Layout";
 import { TrackedCta, TrackedLink } from "@/components/analytics/TrackedCta";
+import { GoogleRating } from "@/components/sections/GoogleRating";
 
 const quickLinks = [
   { label: "New patients", href: "/new-patients" },
@@ -25,6 +26,9 @@ export function SiteFooter() {
         <div className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="text-base font-semibold text-white">{site.name}</p>
+            <div className="mt-2">
+              <GoogleRating inverted />
+            </div>
             <address className="mt-4 not-italic leading-relaxed text-brand-200">
               {site.address.street}
               <br />
@@ -107,7 +111,7 @@ export function SiteFooter() {
                 href={cta.book.href}
                 event="book_click"
                 location="footer"
-                variant="light"
+                variant="gold"
                 size="md"
               >
                 {cta.book.label}

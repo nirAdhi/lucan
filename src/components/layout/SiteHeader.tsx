@@ -91,16 +91,26 @@ export function SiteHeader() {
 
       <Container width="wide">
         <div className="flex items-center justify-between gap-4 py-3">
-          <Link href="/" className="flex shrink-0 items-center py-1" aria-label={`${site.name} home`}>
-            <Image
-              src="/brand/ldic-logo.png"
-              alt=""
-              width={230}
-              height={144}
-              priority
-              className="h-11 w-auto lg:h-12"
-            />
-          </Link>
+          <div className="flex shrink-0 items-center gap-3">
+            <Link href="/" className="flex items-center py-1" aria-label={`${site.name} home`}>
+              <Image
+                src="/brand/ldic-logo.png"
+                alt=""
+                width={230}
+                height={144}
+                priority
+                className="h-11 w-auto lg:h-12"
+              />
+            </Link>
+
+            <a
+              href={cta.call.href}
+              onClick={() => track("phone_click", { cta_location: "header-badge" })}
+              className="hidden items-center rounded-full border border-ink-200 px-4 py-2 text-sm font-semibold text-ink-800 hover:border-brand-300 hover:text-brand-800 xl:flex"
+            >
+              {site.phone}
+            </a>
+          </div>
 
           <nav aria-label="Main" className="hidden items-center lg:flex">
             <div className="relative" ref={treatmentsRef}>
@@ -172,6 +182,7 @@ export function SiteHeader() {
             </LinkButton>
             <LinkButton
               href={cta.book.href}
+              variant="gold"
               size="sm"
               onClick={() => track("book_click", { cta_location: "header" })}
             >
@@ -236,6 +247,7 @@ export function SiteHeader() {
               <div className="mt-5 grid gap-2 px-1 pb-2">
                 <LinkButton
                   href={cta.book.href}
+                  variant="gold"
                   size="lg"
                   onClick={() => track("book_click", { cta_location: "mobile-menu" })}
                 >

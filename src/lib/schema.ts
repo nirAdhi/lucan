@@ -24,7 +24,7 @@ type Json = Record<string, unknown>;
 const dayUri = (day: string) => `https://schema.org/${day}`;
 
 /** The practice itself: a Dentist is a LocalBusiness and a MedicalBusiness in schema.org. */
-export function practiceSchema(): Json {
+export function practiceSchema(rating?: { value: number; count: number }): Json {
   return {
     "@context": "https://schema.org",
     "@type": "Dentist",
@@ -60,7 +60,17 @@ export function practiceSchema(): Json {
       { "@type": "Place", name: "Lucan, Co. Dublin" },
       { "@type": "Place", name: "Dublin West" },
     ],
-    // Deliberately no aggregateRating: review markup must reflect real, collected reviews.
+    // aggregateRating is only ever the live Google figure (see lib/googleRating.ts) -
+    // omitted entirely rather than estimated when no rating has been fetched.
+    ...(rating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: rating.value,
+            reviewCount: rating.count,
+          },
+        }
+      : {}),
     ...(site.social.facebook || site.social.instagram
       ? { sameAs: [site.social.facebook, site.social.instagram].filter(Boolean) }
       : {}),

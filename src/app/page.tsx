@@ -16,6 +16,7 @@ import { FaqList } from "@/components/ui/Faq";
 import { PriceTable } from "@/components/ui/PriceTable";
 import { TrackedCta } from "@/components/analytics/TrackedCta";
 import { Accent } from "@/components/ui/Accent";
+import { GoogleRating } from "@/components/sections/GoogleRating";
 import { BookingCta } from "@/components/sections/BookingCta";
 import { PracticeDetailsCard, PracticeMap } from "@/components/sections/LocationBlock";
 
@@ -62,8 +63,12 @@ export default function HomePage() {
                 planned and priced in writing before it starts.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <TrackedCta href={cta.book.href} event="book_click" location="home-hero" size="lg">
+              <div className="mt-5">
+                <GoogleRating />
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <TrackedCta href={cta.book.href} event="book_click" location="home-hero" variant="gold" size="lg">
                   {cta.book.label}
                 </TrackedCta>
                 <LinkButton href={cta.emergency.href} variant="urgent" size="lg">
@@ -121,15 +126,20 @@ export default function HomePage() {
       </div>
 
       {/* Trust strip - factual practice attributes only. Review markup waits for real reviews. */}
-      <div className="border-b border-brand-900 bg-brand-800">
+      <div className="bg-sand-100">
         <Container width="wide">
-          <ul className="grid gap-x-8 gap-y-6 divide-y divide-brand-700 py-10 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4">
+          <ul className="grid gap-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
             {trustPoints.map((point) => (
-              <li key={point.label} className="flex flex-col pt-6 first:pt-0 sm:pt-0">
-                <span className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-200">
+              <li
+                key={point.label}
+                className="rounded-[var(--radius-card)] bg-white p-5 shadow-[var(--shadow-soft)]"
+              >
+                <span className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-700">
                   {point.label}
                 </span>
-                <span className="mt-1.5 text-[0.95rem] leading-snug text-white">{point.detail}</span>
+                <span className="mt-1.5 block text-[0.95rem] leading-snug text-ink-600">
+                  {point.detail}
+                </span>
               </li>
             ))}
           </ul>
@@ -152,7 +162,7 @@ export default function HomePage() {
               All {treatments.length} treatments &rarr;
             </Link>
           </div>
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 grid gap-5 lg:grid-cols-2">
             {featuredTreatments.map((treatment) => (
               <TreatmentCard key={treatment.slug} treatment={treatment} />
             ))}

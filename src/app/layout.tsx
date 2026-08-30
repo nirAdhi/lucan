@@ -6,10 +6,12 @@ import { site } from "@/content/site";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { MobileCtaBar } from "@/components/layout/MobileCtaBar";
+import { WhatsAppBubble } from "@/components/layout/WhatsAppBubble";
 import { Analytics } from "@/components/analytics/Analytics";
 import { JsonLd } from "@/components/ui/Layout";
 import { practiceSchema, websiteSchema } from "@/lib/schema";
 import { siteUrl } from "@/lib/seo";
+import { getGoogleRating } from "@/lib/googleRating";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,7 +35,9 @@ export const viewport: Viewport = {
   themeColor: "#276862",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const rating = await getGoogleRating();
+
   return (
     <html lang="en-IE" className={accentFont.variable}>
       <body className="flex min-h-dvh flex-col bg-sand-50">
@@ -53,9 +57,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <SiteFooter />
         <MobileCtaBar />
+        <WhatsAppBubble />
         <Analytics />
 
-        <JsonLd data={[practiceSchema(), websiteSchema()]} />
+        <JsonLd data={[practiceSchema(rating ?? undefined), websiteSchema()]} />
       </body>
     </html>
   );

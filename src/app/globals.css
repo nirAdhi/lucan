@@ -12,8 +12,10 @@
  *
  * Brand ramp: matched to the live ldic.ie mint-teal accent (#66b5ab) at brand-500, with
  * 600-900 darkened along the same hue to clear WCAG AA (4.5:1) as body text on white -
- * the source accent alone is only 3.2:1. Sand is the site's warm off-white (#f9f7f5),
- * used as a paper-toned alternative to stark white rather than a loud secondary color.
+ * the source accent alone is only 3.2:1. Sand is the site's warm oatmeal background,
+ * used as the default page tone instead of stark white. Gold is a second, deliberately
+ * separate accent reserved for primary booking CTAs (ink-900 text on gold-500 clears
+ * 8.8:1) - brand teal stays the identity color everywhere else (links, icons, sections).
  */
 @theme {
   --color-brand-50: #f1f9f8;
@@ -27,12 +29,20 @@
   --color-brand-800: #1b504c;
   --color-brand-900: #123a37;
 
-  --color-sand-50: #faf8f5;
-  --color-sand-100: #f5f1eb;
+  --color-sand-50: #f5f1ea;
+  --color-sand-100: #eee8dd;
   --color-sand-200: #e9e3d8;
   --color-sand-300: #d4cab9;
   --color-sand-400: #b8a994;
   --color-sand-500: #a0886a;
+
+  --color-gold-50: #fef8ec;
+  --color-gold-100: #fbeed0;
+  --color-gold-200: #f9db9f;
+  --color-gold-400: #f3bb49;
+  --color-gold-500: #edab26;
+  --color-gold-600: #cf8517;
+  --color-gold-700: #a56318;
 
   --color-ink-50: #f6f7f8;
   --color-ink-100: #eceef0;
@@ -57,7 +67,7 @@
   /* Editorial italic accent for single emphasis words in headlines - see components/ui/Accent.tsx. */
   --font-accent: var(--font-accent-face), Georgia, "Times New Roman", serif;
 
-  --radius-card: 0.875rem;
+  --radius-card: 1.25rem;
 
   --shadow-soft: 0 1px 2px rgb(20 24 27 / 0.04), 0 8px 24px -12px rgb(20 24 27 / 0.12);
   --shadow-lift: 0 2px 4px rgb(20 24 27 / 0.05), 0 16px 40px -16px rgb(20 24 27 / 0.18);

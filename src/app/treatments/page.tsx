@@ -47,7 +47,7 @@ export default function TreatmentsPage() {
           <Section key={category} tone={category === "Implants" ? "tint" : "white"}>
             <Container width="wide">
               <SectionHeading eyebrow={category} title={categoryTitles[category]} />
-              <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="mt-8 grid gap-5 lg:grid-cols-2">
                 {inCategory.map((treatment) => (
                   <TreatmentCard key={treatment.slug} treatment={treatment} />
                 ))}

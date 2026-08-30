@@ -6,6 +6,7 @@ import { team } from "@/content/team";
 import { homepageFaqs } from "@/content/faqs";
 import { buildMetadata, crumbs } from "@/lib/seo";
 import { breadcrumbSchema, faqSchema, practiceSchema } from "@/lib/schema";
+import { getGoogleRating } from "@/lib/googleRating";
 import { Card, Container, JsonLd, Section, SectionHeading } from "@/components/ui/Layout";
 import { FaqList } from "@/components/ui/Faq";
 import { PageHero } from "@/components/sections/Hero";
@@ -47,7 +48,8 @@ const areas = [
   "Dublin West",
 ];
 
-export default function LucanLocationPage() {
+export default async function LucanLocationPage() {
+  const rating = await getGoogleRating();
   return (
     <>
       <LocationView slug="lucan" />
@@ -165,7 +167,7 @@ export default function LucanLocationPage() {
 
       <BookingCta location="location-footer" />
 
-      <JsonLd data={[practiceSchema(), faqSchema(homepageFaqs), breadcrumbSchema(trail)]} />
+      <JsonLd data={[practiceSchema(rating ?? undefined), faqSchema(homepageFaqs), breadcrumbSchema(trail)]} />
     </>
   );
 }

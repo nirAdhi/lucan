@@ -34,7 +34,7 @@ export function MobileCtaBar() {
         <Link
           href={cta.book.href}
           onClick={() => track("book_click", { cta_location: "mobile-cta-bar" })}
-          className="flex items-center justify-center gap-2 rounded-full bg-brand-700 px-4 py-3 text-[0.95rem] font-semibold text-white"
+          className="flex items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-3 text-[0.95rem] font-semibold text-ink-900"
         >
           Book
         </Link>

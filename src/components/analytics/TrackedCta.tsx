@@ -27,7 +27,7 @@ export function TrackedCta({
   location: string;
   /** Treatment slug, when the CTA sits on or refers to a treatment page. */
   treatment?: string;
-  variant?: "primary" | "urgent" | "outline" | "ghost" | "light";
+  variant?: "primary" | "gold" | "urgent" | "outline" | "ghost" | "light";
   size?: "sm" | "md" | "lg";
   className?: string;
   children: ReactNode;

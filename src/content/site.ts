@@ -51,6 +51,15 @@ export const site = {
     facebook: "",
     instagram: "",
   },
+  // TODO(verify): WhatsApp Business number in E.164 (e.g. "+353871234567"). The floating
+  // WhatsAppBubble renders nothing until this is set - see components/layout/WhatsAppBubble.
+  // Typed as `string` (not the `as const` literal below) since it's meant to be filled in.
+  whatsapp: "" as string,
+  // TODO(verify): the practice's Google Place ID, e.g. from
+  // https://developers.google.com/maps/documentation/places/web-service/place-id-finder.
+  // GoogleRating fetches the live rating server-side from this - never a hardcoded number -
+  // and renders nothing until it's set. Also needs a GOOGLE_PLACES_API_KEY env var.
+  googlePlaceId: "" as string,
 } as const;
 
 export const cta = {

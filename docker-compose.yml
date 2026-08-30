@@ -21,6 +21,8 @@ services:
       # set the booking API returns 503 and the UI tells the patient to phone instead.
       BOOKING_NOTIFY_WEBHOOK: ${BOOKING_NOTIFY_WEBHOOK:-}
       BOOKING_LOG_FILE: .data/booking-requests.jsonl
+      # Live Google review rating (see .env.example) - server-only, never baked into the build.
+      GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY:-}
     volumes:
       # Persists the local booking-request fallback log across container recreates.
       - booking-data:/app/.data
