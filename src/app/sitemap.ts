@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { indexableStaticRoutes } from "@/lib/routes";
 import { treatments } from "@/content/treatments";
-import { team } from "@/content/team";
+import { getTeam } from "@/content/team";
 import { publishedPosts } from "@/content/posts";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -13,9 +13,15 @@ import { absoluteUrl } from "@/lib/seo";
  * appear here - a sitemap that lists redirects or noindex pages is worse than no sitemap.
  *
  * Available at /sitemap.xml. Submit it in Search Console (PRD s75).
+ *
+ * Rendered per-request (not at build time): team members now come from Postgres (Phase 2
+ * admin CMS), which isn't reachable during `docker build`.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = "force-dynamic";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const team = await getTeam();
 
   const pages: MetadataRoute.Sitemap = indexableStaticRoutes.map((route) => ({
     url: absoluteUrl(route.path),

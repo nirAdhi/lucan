@@ -45,6 +45,33 @@ npm start                      # serve the production build
 
 ---
 
+## Admin CMS
+
+Dentists, pricing and the before/after case-study gallery are editable at `/admin` — backed
+by Postgres via Prisma (`prisma/schema.prisma`), instead of the hardcoded arrays those content
+modules used to export directly. A single practice-admin login (`ADMIN_USERNAME`/
+`ADMIN_PASSWORD`, Auth.js Credentials provider, no user table) guards everything under
+`/admin/*` in `src/middleware.ts`.
+
+This needs a running Postgres, so it only works via Docker (see below) — there is no local
+SQLite fallback. Running `npm run dev` directly on a machine with no Postgres reachable will
+serve every page that doesn't touch the database fine, and 500 on the ones that do
+(homepage, `/our-team`, `/pricing`, anything under `/admin`).
+
+```bash
+docker compose up -d --build   # brings up Postgres, runs migrations + the seed script, starts the app
+```
+
+The `migrate` service runs once per `docker compose up`, applying `prisma/migrations/*` and
+seeding today's 4 dentists and full price list (`prisma/seed.ts`) — safe to run repeatedly,
+it upserts by slug. Uploaded photos land in `public/uploads/`, mounted as a volume so they
+survive a container recreate.
+
+Required secrets (see `.env.example`): `POSTGRES_PASSWORD`, `AUTH_SECRET` (generate with
+`openssl rand -base64 32`), `ADMIN_USERNAME`, `ADMIN_PASSWORD`.
+
+---
+
 ## Architecture
 
 A **modular monolith** in a single Next.js app (PRD §83), rather than the separate NestJS API of
@@ -55,28 +82,39 @@ seam to split on.
 
 ```
 src/
-├── app/                     Routes (App Router, server components by default)
+├── app/
+│   ├── (site)/              Public site (own layout: header, footer, CTA bar, WhatsApp)
+│   │   ├── page.tsx, treatments/[slug]/, our-team/[slug]/, blog/[slug]/, locations/lucan/, ...
+│   ├── admin/                 Admin CMS - own layout, no public chrome (see below)
+│   │   ├── login/              Credentials sign-in
+│   │   └── (dashboard)/         dentists/ · pricing/ · case-studies/ (list + Server Action forms)
 │   ├── api/booking-requests/  Appointment-request intake (validation, rate limit, delivery)
-│   ├── treatments/[slug]/     10 treatment landing pages from one template (§9)
-│   ├── our-team/[slug]/       Dentist profiles (§46)
-│   ├── blog/[slug]/           Articles (§28)
-│   ├── locations/lucan/       Location page (§11)
-│   ├── sitemap.ts robots.ts   Generated, never hand-maintained (§21, §22)
-│   └── ...                    home, pricing, new-patients, emergency, faqs, contact, privacy
-├── content/                 The data layer — becomes PostgreSQL tables in Phase 2
+│   ├── api/auth/[...nextauth]/ Auth.js route handler
+│   ├── sitemap.ts robots.ts manifest.ts opengraph-image.tsx  Generated, never hand-maintained
+│   └── layout.tsx            True root - just <html>/<body>, fonts and default metadata
+├── content/                 The data layer. team.ts, pricing.ts and caseStudies.ts read
+│   │                        through Prisma (Postgres) behind the admin CMS; everything
+│   │                        else here is still plain, hand-edited TypeScript.
 │   ├── site.ts              NAP, hours, nav, reasons-to-choose
 │   ├── treatments.ts        Treatment pages + their SEO fields (§10)
-│   ├── pricing.ts           Full price list, referenced by slug — never typed into copy (§44)
-│   ├── team.ts booking.ts faqs.ts posts.ts stories.ts
+│   ├── pricing.ts           getPriceGroups()/getPrices() - Postgres-backed, cached + tagged
+│   ├── team.ts              getTeam()/getTeamMember() - Postgres-backed, cached + tagged
+│   ├── caseStudies.ts       getCaseStudies() - before/after gallery, consent-gated
+│   ├── booking.ts faqs.ts posts.ts stories.ts
 │   └── redirects.ts         Legacy URL map (§23, §74)
 ├── lib/
 │   ├── seo.ts               buildMetadata(): canonical + OG + robots by construction
 │   ├── schema.ts            JSON-LD generated from content (§26)
 │   ├── routes.ts            Route registry that feeds the sitemap (§15, §21)
 │   ├── analytics.ts         Typed GA4 events (§40)
-│   └── attribution.ts       First-touch UTM capture (§38)
+│   ├── attribution.ts       First-touch UTM capture (§38)
+│   ├── prisma.ts            Prisma Client singleton
+│   ├── admin.ts upload.ts   requireAdmin() guard + saveUploadedPhoto() for Server Actions
+│   └── googleRating.ts      Live Google rating + review quotes (Places API)
+├── auth.ts auth.config.ts  Auth.js config, split so middleware (Edge runtime) never
+│                            imports the Node-only Credentials provider
 ├── components/              ui/ · layout/ · sections/ · booking/ · analytics/
-└── middleware.ts            Serves the redirect table before routing
+└── middleware.ts            Legacy redirects + the /admin session gate
 ```
 
 ### Conventions worth knowing

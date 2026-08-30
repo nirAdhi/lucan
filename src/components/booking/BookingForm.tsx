@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { bookingReasons, timePreferences } from "@/content/booking";
-import { team } from "@/content/team";
+import type { TeamMember } from "@/content/team";
 import { treatments } from "@/content/treatments";
 import { site } from "@/content/site";
 import { readAttribution } from "@/lib/attribution";
@@ -30,7 +30,7 @@ const inputClass =
 
 const labelClass = "block text-sm font-semibold text-ink-700";
 
-export function BookingForm() {
+export function BookingForm({ team }: { team: Pick<TeamMember, "slug" | "name" | "role">[] }) {
   const params = useSearchParams();
   const startedRef = useRef(false);
 

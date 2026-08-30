@@ -1,0 +1,71 @@
+// Prisma schema for the Phase 2 admin CMS (dentists, pricing, case studies).
+// content/team.ts, content/pricing.ts and content/caseStudies.ts read through this -
+// see those files for the accessor functions every page actually imports.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Mirrors TeamMember in src/content/team.ts field-for-field, plus photoUrl.
+model Dentist {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  role           String
+  qualifications String
+  summary        String
+  bio            String[]
+  specialities   String[]
+  /// Treatment slugs this clinician leads on (content/treatments.ts), for "Your dentist".
+  treatments     String[]
+  photoUrl       String?
+  registration   String?
+  languages      String[]
+  seoTitle       String
+  seoDescription String
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("dentists")
+}
+
+/// Mirrors PriceItem/PriceGroup in src/content/pricing.ts, flattened with a group tag.
+model PriceItem {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  price      String
+  note       String?
+  groupSlug  String
+  groupTitle String
+  groupOrder Int      @default(0)
+  itemOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("price_items")
+}
+
+/// Before/after gallery (Kilmainham-style). consentConfirmed gates public rendering -
+/// see content/caseStudies.ts - the same "never publish what isn't verified" rule this
+/// codebase already applies to patient-stories and reviews.
+model CaseStudy {
+  id               String   @id @default(cuid())
+  treatmentSlug    String
+  treatmentLabel   String
+  beforePhotoUrl   String
+  afterPhotoUrl    String
+  caption          String
+  consentConfirmed Boolean  @default(false)
+  order            Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("case_studies")
+}

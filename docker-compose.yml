@@ -1,4 +1,32 @@
 services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ldic
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your .env file}
+      POSTGRES_DB: ldic
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ldic"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-off: applies migrations and seeds today's dentists/prices on first run, then exits.
+  # `web` waits for this to finish successfully before it starts.
+  migrate:
+    build:
+      context: .
+      target: builder
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed"
+    environment:
+      DATABASE_URL: postgresql://ldic:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your .env file}@db:5432/ldic?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+
   web:
     build:
       context: .
@@ -23,9 +51,21 @@ services:
       BOOKING_LOG_FILE: .data/booking-requests.jsonl
       # Live Google review rating (see .env.example) - server-only, never baked into the build.
       GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY:-}
+      # Admin CMS (Phase 2) - see .env.example for how to generate AUTH_SECRET.
+      DATABASE_URL: postgresql://ldic:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your .env file}@db:5432/ldic?schema=public
+      AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET in your .env file}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in your .env file}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     volumes:
       # Persists the local booking-request fallback log across container recreates.
       - booking-data:/app/.data
+      # Dentist and case-study photos uploaded via /admin - see src/lib/upload.ts.
+      - uploads:/app/public/uploads
 
 volumes:
   booking-data:
+  uploads:
+  db-data:
