@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
-import { accentFont } from "@/lib/fonts";
+import { accentFont, displayFont } from "@/lib/fonts";
 import { site } from "@/content/site";
 import { siteUrl } from "@/lib/seo";
 
@@ -34,7 +34,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en-IE" className={accentFont.variable}>
+    <html lang="en-IE" className={`${accentFont.variable} ${displayFont.variable}`}>
       <body className="flex min-h-dvh flex-col bg-sand-50">{children}</body>
     </html>
   );

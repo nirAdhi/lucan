@@ -60,35 +60,7 @@ export function SiteHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-      {/* Utility bar: NAP details above the fold on desktop, which is what local search visitors look for. */}
-      <div className="hidden border-b border-ink-100 bg-brand-800 text-brand-50 lg:block">
-        <Container width="wide">
-          <div className="flex items-center justify-between py-2 text-[0.8rem]">
-            <p>
-              {site.address.street}, {site.address.locality}, {site.address.region}
-              <span className="mx-2 text-brand-300">&middot;</span>
-              Mon&ndash;Fri 9am&ndash;5pm
-            </p>
-            <p className="flex items-center gap-4">
-              <a
-                href={`mailto:${site.email}`}
-                className="hover:text-white hover:underline"
-              >
-                {site.email}
-              </a>
-              <a
-                href={cta.call.href}
-                className="font-semibold hover:text-white hover:underline"
-                onClick={() => track("phone_click", { cta_location: "utility-bar" })}
-              >
-                {site.phone}
-              </a>
-            </p>
-          </div>
-        </Container>
-      </div>
-
+    <header className="sticky top-0 z-40 bg-sand-50/95 backdrop-blur supports-[backdrop-filter]:bg-sand-50/85">
       <Container width="wide">
         <div className="flex items-center justify-between gap-4 py-3">
           <div className="flex shrink-0 items-center gap-3">

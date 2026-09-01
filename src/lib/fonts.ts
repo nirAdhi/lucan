@@ -14,3 +14,18 @@ export const accentFont = localFont({
   display: "swap",
   variable: "--font-accent-face",
 });
+
+/**
+ * Rounded geometric display face for H1s and the biggest section headlines - a single
+ * ExtraBold weight (~12KB), self-hosted for the same build-with-no-network reason as
+ * accentFont above. Gives headlines a warmer, more distinctive silhouette than the system
+ * sans stack, which is kept for body copy and UI chrome (still the fast, zero-cost default
+ * everywhere else - see --font-sans in globals.css).
+ */
+export const displayFont = localFont({
+  src: "../fonts/plusjakartasans-extrabold.woff2",
+  weight: "800",
+  style: "normal",
+  display: "swap",
+  variable: "--font-display-face",
+});

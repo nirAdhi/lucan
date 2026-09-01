@@ -24,7 +24,7 @@ export function PageHero({
   aside?: ReactNode;
 }) {
   const tones = {
-    tint: "bg-gradient-to-b from-brand-50 to-white",
+    tint: "bg-sand-50",
     brand: "bg-brand-800 text-brand-50",
     urgent: "bg-gradient-to-b from-urgent-50 to-white",
   } as const;
@@ -32,9 +32,9 @@ export function PageHero({
   const inverted = tone === "brand";
 
   return (
-    <div className={`border-b border-ink-100 ${tones[tone]}`}>
+    <div className={tones[tone]}>
       <Container width="wide">
-        <div className="py-8 sm:py-12">
+        <div className="py-14 sm:py-16">
           {trail ? (
             <div className={inverted ? "[&_a]:text-brand-200 [&_span]:text-brand-300" : ""}>
               <Breadcrumbs trail={trail} />
@@ -53,7 +53,7 @@ export function PageHero({
                 </p>
               ) : null}
               <h1
-                className={`text-3xl leading-tight sm:text-4xl lg:text-[2.75rem] ${
+                className={`text-4xl leading-[1.1] sm:text-[2.75rem] lg:text-[3.25rem] ${
                   inverted ? "text-white" : ""
                 }`}
               >

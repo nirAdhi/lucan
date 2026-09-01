@@ -81,17 +81,17 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero (PRD s6, s7): who, where, what, and the primary action, above the fold. */}
-      <div className="border-b border-ink-100 bg-gradient-to-b from-brand-50 via-brand-50/40 to-white">
+      <div className="bg-sand-50">
         <Container width="wide">
-          <div className="grid items-center gap-12 py-14 lg:grid-cols-[1.15fr_1fr] lg:py-20">
+          <div className="grid items-center gap-12 py-20 lg:grid-cols-[1.15fr_1fr] lg:py-28">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-brand-600">
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-brand-600">
                 Lucan Village, Co. Dublin
               </p>
-              <h1 className="text-3xl leading-[1.15] sm:text-4xl lg:text-[3.25rem]">
+              <h1 className="text-4xl leading-[1.08] sm:text-5xl lg:text-[3.75rem]">
                 Dentistry and implantology in the <Accent>heart</Accent> of Lucan
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-500">
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-500">
                 General, cosmetic and implant dentistry for adults and children, from a team
                 that includes a periodontist and an oral surgeon. Treatment is explained,
                 planned and priced in writing before it starts.

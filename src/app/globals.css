@@ -67,6 +67,9 @@
   /* Editorial italic accent for single emphasis words in headlines - see components/ui/Accent.tsx. */
   --font-accent: var(--font-accent-face), Georgia, "Times New Roman", serif;
 
+  /* Rounded geometric display face for h1/h2 - see lib/fonts.ts. */
+  --font-display: var(--font-display-face), var(--font-sans);
+
   --radius-card: 1.25rem;
 
   --shadow-soft: 0 1px 2px rgb(20 24 27 / 0.04), 0 8px 24px -12px rgb(20 24 27 / 0.12);
@@ -97,6 +100,15 @@
     font-weight: 600;
     letter-spacing: -0.02em;
     text-wrap: balance;
+  }
+
+  /* The two biggest headline levels get the rounded display face - reserved for moments
+     that matter (hero, section titles), not every card/label heading. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
 
   p {
