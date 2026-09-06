@@ -1,8 +1,7 @@
 import { cta, site } from "@/content/site";
 import { Card } from "@/components/ui/Layout";
 import { TrackedCta, TrackedLink } from "@/components/analytics/TrackedCta";
-
-const mapsQuery = encodeURIComponent(site.maps.query);
+import { MapEmbed } from "@/components/sections/MapEmbed";
 
 /** Practice details card: NAP, hours and the two actions (PRD s11, s47). */
 export function PracticeDetailsCard() {
@@ -99,8 +98,15 @@ export function PracticeDetailsCard() {
 }
 
 /**
- * Google Maps embed. Uses the query embed rather than the JS API: no key to leak, no
- * third-party script, and it lazy-loads so it stays off the critical path (PRD s54).
+ * Google Maps embed, behind a click.
+ *
+ * The iframe used to load with the page, which set ten Google cookies on every visitor
+ * before they had agreed to anything. For an Irish practice under GDPR that is a consent
+ * problem, not just a Lighthouse line item - and the site already gates GA4 behind consent,
+ * so loading Maps unconditionally was inconsistent with its own rules.
+ *
+ * Nothing third-party is requested until the visitor asks for the map. The address and a
+ * directions link are there without it, so the section is still useful if they never do.
  */
 export function PracticeMap({ className }: { className?: string }) {
   return (
@@ -112,13 +118,7 @@ export function PracticeMap({ className }: { className?: string }) {
         .filter(Boolean)
         .join(" ")}
     >
-      <iframe
-        title={`Map showing ${site.name} in ${site.address.locality}`}
-        src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        className="h-[20rem] w-full border-0 lg:h-full lg:min-h-[26rem]"
-      />
+      <MapEmbed />
     </div>
   );
 }
