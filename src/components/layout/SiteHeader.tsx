@@ -95,6 +95,9 @@ export function SiteHeader() {
                 width={230}
                 height={144}
                 priority
+                /* Renders ~64-70px wide. Without `sizes`, next/image picked a 640px-wide
+                   candidate for it - 26KB to draw a 70px logo. */
+                sizes="(min-width: 1024px) 72px, 64px"
                 className="h-10 w-auto lg:h-11"
               />
             </Link>

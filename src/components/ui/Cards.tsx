@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Treatment } from "@/content/treatments";
-import { initials, type TeamMember } from "@/content/team";
+import type { TeamMember } from "@/content/team";
+import { initials } from "@/lib/initials";
 import { Badge } from "@/components/ui/Layout";
 
 /**

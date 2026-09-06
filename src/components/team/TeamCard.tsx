@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cta } from "@/content/site";
-import { initials, type TeamMember } from "@/content/team";
+import type { TeamMember } from "@/content/team";
+import { initials } from "@/lib/initials";
 import { track } from "@/lib/analytics";
 
 /**

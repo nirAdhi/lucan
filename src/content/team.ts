@@ -91,11 +91,3 @@ export async function getTeamForTreatment(treatmentSlug: string): Promise<TeamMe
   return team.filter((member) => member.treatments.includes(treatmentSlug));
 }
 
-export function initials(name: string): string {
-  return name
-    .replace(/^Dr\.?\s+/i, "")
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
-}
