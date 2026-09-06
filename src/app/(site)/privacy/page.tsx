@@ -5,6 +5,7 @@ import { buildMetadata, crumbs } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/schema";
 import { Container, JsonLd, Section } from "@/components/ui/Layout";
 import { PageHero } from "@/components/sections/Hero";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 /**
  * Privacy and cookie notice (PRD s72).
@@ -51,7 +52,10 @@ export default function PrivacyPage() {
               is the data controller for information submitted through this website. You can
               contact the practice on{" "}
               <a href={`tel:${site.phoneE164}`}>{site.phone}</a> or at{" "}
-              <a href={`mailto:${site.email}`}>{site.email}</a>.
+              <EmailOff>
+                <a href={`mailto:${site.email}`}>{site.email}</a>
+              </EmailOff>
+              .
             </p>
 
             <h2>Appointment requests and enquiries</h2>

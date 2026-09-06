@@ -11,6 +11,7 @@ import { FaqList } from "@/components/ui/Faq";
 import { PriceTable } from "@/components/ui/PriceTable";
 import { PageHero } from "@/components/sections/Hero";
 import { TrackedCta } from "@/components/analytics/TrackedCta";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 /**
  * Referral page (PRD s73 - the legacy /dentist-referrals URL keeps its path).
@@ -64,15 +65,17 @@ export default async function ReferralsPage() {
             >
               {site.phone}
             </TrackedCta>
-            <TrackedCta
-              href={`mailto:${site.email}?subject=Patient%20referral`}
-              event="contact_form"
-              location="referrals-hero"
-              variant="outline"
-              size="lg"
-            >
-              Email a referral
-            </TrackedCta>
+            <EmailOff>
+              <TrackedCta
+                href={`mailto:${site.email}?subject=Patient%20referral`}
+                event="contact_form"
+                location="referrals-hero"
+                variant="outline"
+                size="lg"
+              >
+                Email a referral
+              </TrackedCta>
+            </EmailOff>
           </>
         }
       />
@@ -109,9 +112,11 @@ export default async function ReferralsPage() {
               <ol className="mt-4 space-y-4 text-[0.95rem] text-ink-600">
                 <li>
                   <strong className="text-ink-900">1. Send the referral.</strong> Email{" "}
-                  <a href={`mailto:${site.email}`} className="text-brand-700 underline">
-                    {site.email}
-                  </a>{" "}
+                  <EmailOff>
+                    <a href={`mailto:${site.email}`} className="text-brand-700 underline">
+                      {site.email}
+                    </a>
+                  </EmailOff>{" "}
                   or phone {site.phone} with the patient's details, the reason for referral and
                   any imaging you already hold.
                 </li>
@@ -219,16 +224,18 @@ export default async function ReferralsPage() {
               >
                 {site.phone}
               </TrackedCta>
-              <TrackedCta
-                href={`mailto:${site.email}?subject=Patient%20referral`}
-                event="contact_form"
-                location="referrals-footer"
-                variant="outline"
-                size="lg"
-                className="border-brand-300 text-white hover:bg-brand-700"
-              >
-                {site.email}
-              </TrackedCta>
+              <EmailOff>
+                <TrackedCta
+                  href={`mailto:${site.email}?subject=Patient%20referral`}
+                  event="contact_form"
+                  location="referrals-footer"
+                  variant="outline"
+                  size="lg"
+                  className="border-brand-300 text-white hover:bg-brand-700"
+                >
+                  {site.email}
+                </TrackedCta>
+              </EmailOff>
             </div>
           </div>
         </Container>

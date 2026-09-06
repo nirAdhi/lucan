@@ -14,6 +14,7 @@ import {
 } from "@/components/sections/LocationBlock";
 import { BookingForm } from "@/components/booking/BookingForm";
 import { TrackedCta } from "@/components/analytics/TrackedCta";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 const trail = crumbs({ name: "Contact", path: "/contact" });
 
@@ -39,15 +40,17 @@ export default async function ContactPage() {
             <TrackedCta href={cta.call.href} event="phone_click" location="contact-hero" size="lg">
               {site.phone}
             </TrackedCta>
-            <TrackedCta
-              href={`mailto:${site.email}`}
-              event="contact_form"
-              location="contact-hero"
-              variant="outline"
-              size="lg"
-            >
-              {site.email}
-            </TrackedCta>
+            <EmailOff>
+              <TrackedCta
+                href={`mailto:${site.email}`}
+                event="contact_form"
+                location="contact-hero"
+                variant="outline"
+                size="lg"
+              >
+                {site.email}
+              </TrackedCta>
+            </EmailOff>
           </>
         }
       />

@@ -11,6 +11,7 @@ import { FaqList } from "@/components/ui/Faq";
 import { PageHero } from "@/components/sections/Hero";
 import { BookingForm } from "@/components/booking/BookingForm";
 import { TrackedCta } from "@/components/analytics/TrackedCta";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 const trail = crumbs({ name: "Book Appointment", path: "/book" });
 
@@ -66,9 +67,11 @@ export default async function BookPage() {
                 </TrackedCta>
                 <p className="mt-3 text-sm text-ink-400">
                   Or email{" "}
-                  <a href={`mailto:${site.email}`} className="text-brand-700 underline">
-                    {site.email}
-                  </a>
+                  <EmailOff>
+                    <a href={`mailto:${site.email}`} className="text-brand-700 underline">
+                      {site.email}
+                    </a>
+                  </EmailOff>
                 </p>
               </Card>
 

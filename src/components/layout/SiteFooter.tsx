@@ -4,6 +4,7 @@ import { treatments } from "@/content/treatments";
 import { Container } from "@/components/ui/Layout";
 import { TrackedCta, TrackedLink } from "@/components/analytics/TrackedCta";
 import { GoogleRating } from "@/components/sections/GoogleRating";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 const quickLinks = [
   { label: "New patients", href: "/new-patients" },
@@ -51,9 +52,11 @@ export function SiteFooter() {
               >
                 {site.phone}
               </TrackedLink>
-              <a href={`mailto:${site.email}`} className="block hover:underline">
-                {site.email}
-              </a>
+              <EmailOff>
+                <a href={`mailto:${site.email}`} className="block hover:underline">
+                  {site.email}
+                </a>
+              </EmailOff>
             </p>
           </div>
 

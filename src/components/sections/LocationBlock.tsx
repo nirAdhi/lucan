@@ -2,6 +2,7 @@ import { cta, site } from "@/content/site";
 import { Card } from "@/components/ui/Layout";
 import { TrackedCta, TrackedLink } from "@/components/analytics/TrackedCta";
 import { MapEmbed } from "@/components/sections/MapEmbed";
+import { EmailOff } from "@/components/ui/EmailOff";
 
 /** Practice details card: NAP, hours and the two actions (PRD s11, s47). */
 export function PracticeDetailsCard() {
@@ -47,9 +48,11 @@ export function PracticeDetailsCard() {
         <div>
           <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-400">Email</dt>
           <dd className="mt-1">
-            <a href={`mailto:${site.email}`} className="text-brand-700 hover:underline">
-              {site.email}
-            </a>
+            <EmailOff>
+              <a href={`mailto:${site.email}`} className="text-brand-700 hover:underline">
+                {site.email}
+              </a>
+            </EmailOff>
           </dd>
         </div>
 
