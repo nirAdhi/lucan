@@ -37,7 +37,10 @@ function buildCsp(nonce: string, isDev: boolean): string {
     "img-src 'self' data: blob: https://res.cloudinary.com https://maps.gstatic.com https://*.googleapis.com",
     "media-src 'self' https://res.cloudinary.com",
     "font-src 'self' data:",
-    "connect-src 'self' https://res.cloudinary.com https://*.google-analytics.com https://*.googletagmanager.com",
+    // ws:/wss: in dev only, for the hot-reload socket. Chrome accepts a same-origin
+    // websocket under 'self', but not if dev is proxied through a different origin - and a
+    // silently dead HMR socket is a miserable thing to debug.
+    `connect-src 'self' https://res.cloudinary.com https://*.google-analytics.com https://*.googletagmanager.com${isDev ? " ws: wss:" : ""}`,
     "frame-src https://www.google.com https://maps.google.com",
     "object-src 'none'",
     "base-uri 'none'",
