@@ -24,7 +24,10 @@
   --color-brand-300: #97cec7;
   --color-brand-400: #75bdb3;
   --color-brand-500: #64b4aa;
-  --color-brand-600: #347f76;
+  /* Nudged darker from #347f76: it cleared 4.5:1 on white (4.73) but the page background
+     later moved to sand, where it dropped to 4.20 and failed for the small uppercase
+     eyebrow text it is used for. Now 4.66 on sand. */
+  --color-brand-600: #31776f;
   --color-brand-700: #276862;
   --color-brand-800: #1b504c;
   --color-brand-900: #123a37;
@@ -48,7 +51,10 @@
   --color-ink-100: #eceef0;
   --color-ink-200: #d6dade;
   --color-ink-300: #b0b8be;
-  --color-ink-400: #7d878f;
+  /* Darkened from #7d878f, which was only 3.3:1 on the sand background (and 3.7:1 even on
+     white) - it is used for muted body text in ~40 places, so every one of them failed
+     WCAG AA. This value clears 4.5:1 on sand, white and the ink-50 tint. */
+  --color-ink-400: #666f75;
   --color-ink-500: #5b656d;
   --color-ink-600: #454e55;
   --color-ink-700: #343b41;
