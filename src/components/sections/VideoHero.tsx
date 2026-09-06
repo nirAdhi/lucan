@@ -19,7 +19,6 @@ export function VideoHero({ children }: { children: ReactNode }) {
     <section className="relative isolate -mt-24 flex min-h-[36rem] items-center overflow-hidden lg:min-h-[42rem]">
       <HeroBackdrop
         src={site.heroVideo.src}
-        srcSmall={site.heroVideo.srcSmall}
         poster={site.heroVideo.poster}
       />
 

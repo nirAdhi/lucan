@@ -79,8 +79,10 @@ export const site = {
    *   q_auto        quality by content, not a fixed bitrate
    *   w_*,c_limit   cap the width, never upscale
    *
-   * Measured result: 6.4MB master -> 1.96MB desktop, 770KB mobile. HeroBackdrop picks
-   * between them by viewport and defers the download until after first paint.
+   * Measured result: 6.4MB master -> 1.96MB. Only desktop loads it at all: on a throttled
+   * mobile profile the video landed in the LCP window and, covering the same area as the
+   * poster, became a second LCP candidate at 5.1s. Phones get the poster (12KB via
+   * next/image) instead - see components/sections/HeroBackdrop.tsx.
    *
    * `so_2` on the poster is the frame at 2s - chosen because the subject sits right of
    * frame, leaving the clean left side under the headline.
@@ -90,9 +92,6 @@ export const site = {
    */
   heroVideo: {
     src: "https://res.cloudinary.com/dsiratycd/video/upload/e_contrast:-25,e_brightness:18,f_auto:video,q_auto,w_1440,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.mp4" as string,
-    /** Smaller encode for narrow viewports. Optional - falls back to `src`. */
-    srcSmall:
-      "https://res.cloudinary.com/dsiratycd/video/upload/e_contrast:-25,e_brightness:18,f_auto:video,q_auto,w_768,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.mp4" as string,
     poster:
       "https://res.cloudinary.com/dsiratycd/video/upload/so_2,e_contrast:-25,e_brightness:18,f_jpg,q_auto,w_1600,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.jpg" as string,
   },

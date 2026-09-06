@@ -13,6 +13,13 @@ export const accentFont = localFont({
   style: "italic",
   display: "swap",
   variable: "--font-accent-face",
+  /**
+   * Not preloaded. next/font preloads by default, which put this 45KB file in the critical
+   * path competing with the CSS on a throttled connection - a heavy price for a face that
+   * styles a single word ("heart") in the headline. With display:swap the fallback serif
+   * paints immediately and this swaps in when it arrives.
+   */
+  preload: false,
 });
 
 /**

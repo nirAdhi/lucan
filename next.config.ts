@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
   // so that Phase 2 can move the redirect table into PostgreSQL without a redeploy.
   images: {
     formats: ["image/avif", "image/webp"],
+    // The hero poster lives on Cloudinary. Routing it through next/image gets it resized
+    // per device and re-encoded to AVIF - as a plain <img> it shipped one 1600px JPEG to
+    // every visitor, including phones.
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
   /**
    * Force <title>/<meta description> into <head> for every user agent.
