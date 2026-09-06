@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { patientStories, testimonials } from "@/content/stories";
+import { patientStories } from "@/content/stories";
+import { getTestimonials } from "@/content/testimonials";
 import { getTreatment } from "@/content/treatments";
 import { buildMetadata, crumbs } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -19,7 +20,9 @@ export const metadata: Metadata = buildMetadata({
   path: "/patient-stories",
 });
 
-export default function PatientStoriesPage() {
+export default async function PatientStoriesPage() {
+  // Admin-managed and consent-gated - see content/testimonials.ts.
+  const testimonials = await getTestimonials();
   const hasContent = patientStories.length > 0 || testimonials.length > 0;
 
   return (
@@ -111,13 +114,18 @@ export default function PatientStoriesPage() {
               <SectionHeading eyebrow="Testimonials" title="What patients say" />
               <ul className="mt-8 grid gap-5 lg:grid-cols-3">
                 {testimonials.map((testimonial) => (
-                  <Card as="li" key={testimonial.quote.slice(0, 40)}>
+                  <Card as="li" key={testimonial.id}>
                     <blockquote className="text-[0.95rem] leading-relaxed text-ink-600">
                       &ldquo;{testimonial.quote}&rdquo;
                     </blockquote>
-                    <p className="mt-4 text-sm font-semibold text-ink-900">{testimonial.author}</p>
-                    {testimonial.source ? (
-                      <p className="text-xs text-ink-400">via {testimonial.source}</p>
+                    <p className="mt-4 text-sm font-semibold text-ink-900">
+                      {testimonial.author}
+                      {testimonial.area ? (
+                        <span className="font-normal text-ink-500"> &middot; {testimonial.area}</span>
+                      ) : null}
+                    </p>
+                    {testimonial.treatmentLabel ? (
+                      <p className="text-xs text-ink-400">{testimonial.treatmentLabel}</p>
                     ) : null}
                   </Card>
                 ))}

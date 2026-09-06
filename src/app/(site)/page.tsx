@@ -11,14 +11,17 @@ import { buildMetadata } from "@/lib/seo";
 import { faqSchema } from "@/lib/schema";
 import { Card, Container, JsonLd, Section, SectionHeading } from "@/components/ui/Layout";
 import { LinkButton } from "@/components/ui/Button";
-import { TreatmentCard, TeamCard } from "@/components/ui/Cards";
+import { TreatmentCard } from "@/components/ui/Cards";
+import { TeamCard } from "@/components/team/TeamCard";
 import { FaqList } from "@/components/ui/Faq";
 import { PriceTable } from "@/components/ui/PriceTable";
 import { TrackedCta } from "@/components/analytics/TrackedCta";
 import { Accent } from "@/components/ui/Accent";
 import { GoogleRating } from "@/components/sections/GoogleRating";
 import { GoogleReviews } from "@/components/sections/GoogleReviews";
+import { VideoHero } from "@/components/sections/VideoHero";
 import { CaseStudiesGallery } from "@/components/sections/CaseStudiesGallery";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { BookingCta } from "@/components/sections/BookingCta";
 import { PracticeDetailsCard, PracticeMap } from "@/components/sections/LocationBlock";
 
@@ -36,37 +39,6 @@ const trustPoints = [
   { label: "PRSI", detail: "Exams and scale & polish, subject to eligibility" },
 ];
 
-const quickLinks = [
-  {
-    eyebrow: "Pricing",
-    title: "Transparent fees",
-    body: "The full price list is published on the site, so there are no phone-call quotes.",
-    href: "/pricing",
-    cta: "See prices",
-  },
-  {
-    eyebrow: "PRSI",
-    title: "Dental benefits",
-    body: "PRSI examinations and scale-and-polish are offered, subject to eligibility.",
-    href: "/faqs#costs-and-prsi",
-    cta: "PRSI and payment",
-  },
-  {
-    eyebrow: "Referrals",
-    title: "For other dentists",
-    body: "Refer a patient for implant, periodontal or oral surgery treatment.",
-    href: "/dentist-referrals",
-    cta: "Refer a patient",
-  },
-  {
-    eyebrow: "FAQs",
-    title: "Common questions",
-    body: "Answers on costs, first visits, anxiety and what to expect.",
-    href: "/faqs",
-    cta: "Read the FAQs",
-  },
-];
-
 export default async function HomePage() {
   const team = await getTeam();
   const headlinePrices = await getPrices([
@@ -80,100 +52,56 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero (PRD s6, s7): who, where, what, and the primary action, above the fold. */}
-      <div className="bg-sand-50">
+      {/* Hero (PRD s6, s7): who, where, what, and the primary action, above the fold.
+          Deliberately spare - one headline, one paragraph, two actions. The "what a first
+          visit involves" detail that used to sit here lives on /new-patients, which the
+          hero links to rather than duplicating. */}
+      <VideoHero>
+        <p className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
+          Lucan Village, Co. Dublin
+        </p>
+        <h1 className="hero-copy mt-6 text-4xl leading-[1.08] text-white sm:text-5xl lg:text-[3.75rem]">
+          Dentistry and implantology in the <Accent>heart</Accent> of Lucan
+        </h1>
+        {/* Full-strength white, not white/80: the paragraph is the smallest text on the
+            video and needs every bit of contrast it can get without a panel. */}
+        <p className="hero-copy mt-7 max-w-xl text-lg leading-relaxed text-white">
+          General, cosmetic and implant dentistry for adults and children, from a team
+          that includes a periodontist and an oral surgeon.
+        </p>
+
+        <div className="mt-9 flex flex-wrap gap-3">
+          <TrackedCta href={cta.book.href} event="book_click" location="home-hero" variant="gold" size="lg">
+            {cta.book.label}
+          </TrackedCta>
+          <TrackedCta
+            href={cta.call.href}
+            event="phone_click"
+            location="home-hero"
+            variant="ghost"
+            size="lg"
+            className="border border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+          >
+            {site.phone}
+          </TrackedCta>
+        </div>
+
+        <div className="mt-8">
+          <GoogleRating inverted />
+        </div>
+      </VideoHero>
+
+      {/* Trust strip - factual practice attributes only, as one quiet line rather than four
+          cards. The same facts are expanded in "Why patients choose the practice" below;
+          three separate card grids saying the same thing is what made this page feel busy. */}
+      <div className="border-y border-ink-100 bg-white">
         <Container width="wide">
-          <div className="grid items-center gap-12 py-20 lg:grid-cols-[1.15fr_1fr] lg:py-28">
-            <div>
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-brand-600">
-                Lucan Village, Co. Dublin
-              </p>
-              <h1 className="text-4xl leading-[1.08] sm:text-5xl lg:text-[3.75rem]">
-                Dentistry and implantology in the <Accent>heart</Accent> of Lucan
-              </h1>
-              <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-500">
-                General, cosmetic and implant dentistry for adults and children, from a team
-                that includes a periodontist and an oral surgeon. Treatment is explained,
-                planned and priced in writing before it starts.
-              </p>
-
-              <div className="mt-5">
-                <GoogleRating />
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <TrackedCta href={cta.book.href} event="book_click" location="home-hero" variant="gold" size="lg">
-                  {cta.book.label}
-                </TrackedCta>
-                <LinkButton href={cta.emergency.href} variant="urgent" size="lg">
-                  {cta.emergency.label}
-                </LinkButton>
-              </div>
-
-              <p className="mt-6 text-sm text-ink-500">
-                Prefer to talk to someone?{" "}
-                <TrackedCta
-                  href={cta.call.href}
-                  event="phone_click"
-                  location="home-hero"
-                  variant="ghost"
-                  size="sm"
-                  className="px-1 underline"
-                >
-                  {site.phone}
-                </TrackedCta>
-              </p>
-            </div>
-
-            <Card className="lg:p-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600">
-                New patients welcome
-              </p>
-              <h2 className="mt-3 text-xl">What a first visit involves</h2>
-              <ol className="mt-4 space-y-3 text-[0.95rem] text-ink-600">
-                <li className="flex gap-3">
-                  <Step n={1} />
-                  <span>Your dentist listens to your concerns and examines your teeth and gums.</span>
-                </li>
-                <li className="flex gap-3">
-                  <Step n={2} />
-                  <span>X-rays or scans are taken only where they are needed.</span>
-                </li>
-                <li className="flex gap-3">
-                  <Step n={3} />
-                  <span>You leave with the options explained and a written treatment plan.</span>
-                </li>
-              </ol>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-5">
-                <p className="text-sm text-ink-500">
-                  Exam from <span className="font-semibold text-brand-800">€60</span>
-                  <span className="mx-1.5 text-ink-300">|</span>
-                  PRSI exam free, subject to eligibility
-                </p>
-                <Link href="/new-patients" className="text-sm font-semibold text-brand-700 hover:underline">
-                  New patient guide &rarr;
-                </Link>
-              </div>
-            </Card>
-          </div>
-        </Container>
-      </div>
-
-      {/* Trust strip - factual practice attributes only. Review markup waits for real reviews. */}
-      <div className="bg-sand-100">
-        <Container width="wide">
-          <ul className="grid gap-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="flex flex-wrap justify-center gap-x-10 gap-y-3 py-6 text-sm text-ink-500">
             {trustPoints.map((point) => (
-              <li
-                key={point.label}
-                className="rounded-[var(--radius-card)] bg-white p-5 shadow-[var(--shadow-soft)]"
-              >
-                <span className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-700">
-                  {point.label}
-                </span>
-                <span className="mt-1.5 block text-[0.95rem] leading-snug text-ink-600">
-                  {point.detail}
-                </span>
+              <li key={point.label}>
+                <span className="font-semibold text-brand-700">{point.label}</span>
+                <span className="mx-2 text-ink-300">&middot;</span>
+                {point.detail}
               </li>
             ))}
           </ul>
@@ -196,7 +124,7 @@ export default async function HomePage() {
               All {treatments.length} treatments &rarr;
             </Link>
           </div>
-          <ul className="mt-10 grid gap-5 lg:grid-cols-2">
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featuredTreatments.map((treatment) => (
               <TreatmentCard key={treatment.slug} treatment={treatment} />
             ))}
@@ -257,7 +185,7 @@ export default async function HomePage() {
               Meet the team &rarr;
             </Link>
           </div>
-          <ul className="mt-10 grid gap-5 lg:grid-cols-2">
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((member) => (
               <TeamCard key={member.slug} member={member} />
             ))}
@@ -268,6 +196,10 @@ export default async function HomePage() {
       {/* Real Google review quotes - renders nothing until content/site.ts's
           googlePlaceId + GOOGLE_PLACES_API_KEY are set (see lib/googleRating.ts). */}
       <GoogleReviews />
+
+      {/* Patient testimonials - admin-managed at /admin/testimonials, renders nothing
+          until at least one consented testimonial exists. */}
+      <Testimonials limit={3} />
 
       {/* Before/after gallery - admin-managed at /admin/case-studies, renders nothing
           until at least one consented case study exists. */}
@@ -317,34 +249,6 @@ export default async function HomePage() {
             </div>
             <PriceTable items={headlinePrices} caption="A few common treatments" />
           </div>
-        </Container>
-      </Section>
-
-      {/* Quick links - the practical questions a new patient has before booking. */}
-      <Section tone="tint">
-        <Container width="wide">
-          <SectionHeading
-            eyebrow="Before you book"
-            title="Making your visit simple"
-            intro="Fees, PRSI cover, referrals and common questions, answered up front."
-          />
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {quickLinks.map((link) => (
-              <Card as="li" key={link.href}>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-brand-600">
-                  {link.eyebrow}
-                </p>
-                <h3 className="mt-2 font-semibold text-ink-900">{link.title}</h3>
-                <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-500">{link.body}</p>
-                <Link
-                  href={link.href}
-                  className="mt-4 inline-block text-sm font-semibold text-brand-700 hover:underline"
-                >
-                  {link.cta} &rarr;
-                </Link>
-              </Card>
-            ))}
-          </ul>
         </Container>
       </Section>
 
@@ -411,16 +315,5 @@ export default async function HomePage() {
 
       <JsonLd data={faqSchema(homepageFaqs)} />
     </>
-  );
-}
-
-function Step({ n }: { n: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800"
-    >
-      {n}
-    </span>
   );
 }

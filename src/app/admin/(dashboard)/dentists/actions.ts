@@ -30,6 +30,7 @@ async function readFields(formData: FormData) {
     summary: String(formData.get("summary") ?? "").trim(),
     bio: lines(formData.get("bio")),
     specialities: lines(formData.get("specialities")),
+    tags: lines(formData.get("tags")),
     treatments: formData.getAll("treatments").map(String),
     languages: lines(formData.get("languages")),
     registration: String(formData.get("registration") ?? "").trim() || null,

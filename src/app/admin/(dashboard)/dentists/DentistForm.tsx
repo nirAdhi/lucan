@@ -83,6 +83,24 @@ export function DentistForm({
         />
       </div>
 
+      <div>
+        <label htmlFor="tags" className={labelClass}>
+          Card tags (one per line)
+        </label>
+        <textarea
+          id="tags"
+          name="tags"
+          rows={3}
+          defaultValue={dentist?.tags.join("\n")}
+          placeholder={"Implants\nOral surgery"}
+          className={inputClass}
+        />
+        <p className="mt-1.5 text-xs text-ink-400">
+          Short chips on the team card - one or two words each. The longer specialities below
+          are for the profile page and are too long to sit in a pill.
+        </p>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="specialities" className={labelClass}>

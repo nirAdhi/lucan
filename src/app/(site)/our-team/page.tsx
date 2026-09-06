@@ -3,7 +3,7 @@ import { getTeam } from "@/content/team";
 import { buildMetadata, crumbs } from "@/lib/seo";
 import { breadcrumbSchema } from "@/lib/schema";
 import { Container, JsonLd, Section, SectionHeading } from "@/components/ui/Layout";
-import { TeamCard } from "@/components/ui/Cards";
+import { TeamCard } from "@/components/team/TeamCard";
 import { PageHero } from "@/components/sections/Hero";
 import { BookingCta } from "@/components/sections/BookingCta";
 import { LinkButton } from "@/components/ui/Button";
@@ -37,7 +37,7 @@ export default async function TeamPage() {
 
       <Section>
         <Container width="wide">
-          <ul className="grid gap-5 lg:grid-cols-2">
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((member) => (
               <TeamCard key={member.slug} member={member} />
             ))}

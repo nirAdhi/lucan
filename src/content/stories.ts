@@ -29,16 +29,12 @@ export type PatientStory = {
 
 export const patientStories: PatientStory[] = [];
 
-export type Testimonial = {
-  /** Attribution as consented - typically first name and area. */
-  author: string;
-  quote: string;
-  treatment?: string;
-  /** Where the review was left, e.g. "Google". Never guess. */
-  source?: string;
-};
-
-export const testimonials: Testimonial[] = [];
+/**
+ * Short testimonials moved to content/testimonials.ts in Phase 2 - they are now managed at
+ * /admin/testimonials and stored in Postgres with a consent flag and a consent date, so
+ * the practice can add them without a deploy. The longer, structured case narratives in
+ * `patientStories` above are still static and still deliberately empty.
+ */
 
 export function getStory(slug: string): PatientStory | undefined {
   return patientStories.find((story) => story.slug === slug);

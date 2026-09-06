@@ -47,19 +47,55 @@ export const site = {
   cancellationNote:
     "The practice asks for at least 24 hours' notice to reschedule an appointment.",
   social: {
-    // TODO(verify): add the practice's live profile URLs; these feed Organization sameAs.
-    facebook: "",
-    instagram: "",
+    /**
+     * Feed the floating SocialRail and Organization `sameAs`. Each renders only when set.
+     *
+     * TODO(verify): Facebook. The link on the live ldic.ie is
+     * `facebook.com/share/16spoFg...tid=wwXIfr` - a truncated share URL with a literal
+     * "..." in it, so it is broken there too. Needs the real page URL from the practice
+     * rather than a guess.
+     */
+    facebook: "" as string,
+    instagram: "https://www.instagram.com/lucandentalimplantologycentre" as string,
   },
-  // TODO(verify): WhatsApp Business number in E.164 (e.g. "+353871234567"). The floating
-  // WhatsAppBubble renders nothing until this is set - see components/layout/WhatsAppBubble.
-  // Typed as `string` (not the `as const` literal below) since it's meant to be filled in.
+  // TODO(verify): WhatsApp Business number in E.164 (e.g. "+353871234567"). The practice
+  // phone is a landline, so this needs to be whichever mobile actually has WhatsApp
+  // Business on it. The rail's WhatsApp button renders only once this is set.
   whatsapp: "" as string,
   // TODO(verify): the practice's Google Place ID, e.g. from
   // https://developers.google.com/maps/documentation/places/web-service/place-id-finder.
   // GoogleRating fetches the live rating server-side from this - never a hardcoded number -
   // and renders nothing until it's set. Also needs a GOOGLE_PLACES_API_KEY env var.
   googlePlaceId: "" as string,
+  /**
+   * Homepage hero backdrop (components/sections/VideoHero.tsx).
+   *
+   * Served from Cloudinary with delivery transformations in the URL rather than as a file
+   * in public/, so the master upload stays untouched and the browser gets a right-sized,
+   * re-encoded copy. The source master is 1920x1080 / 19s / 6.4MB, which is far too heavy
+   * to put behind an H1; the transformations below do the work:
+   *
+   *   f_auto:video  negotiate the format (WebM to Chrome, MP4 to Safari)
+   *   q_auto        quality by content, not a fixed bitrate
+   *   w_*,c_limit   cap the width, never upscale
+   *
+   * Measured result: 6.4MB master -> 1.96MB desktop, 770KB mobile. HeroBackdrop picks
+   * between them by viewport and defers the download until after first paint.
+   *
+   * `so_2` on the poster is the frame at 2s - chosen because the subject sits right of
+   * frame, leaving the clean left side under the headline.
+   *
+   * CONSENT: anyone identifiable in this footage needs documented consent or a stock
+   * licence on file - the same rule content/stories.ts and the case-study gallery follow.
+   */
+  heroVideo: {
+    src: "https://res.cloudinary.com/dsiratycd/video/upload/e_contrast:-25,e_brightness:18,f_auto:video,q_auto,w_1440,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.mp4" as string,
+    /** Smaller encode for narrow viewports. Optional - falls back to `src`. */
+    srcSmall:
+      "https://res.cloudinary.com/dsiratycd/video/upload/e_contrast:-25,e_brightness:18,f_auto:video,q_auto,w_768,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.mp4" as string,
+    poster:
+      "https://res.cloudinary.com/dsiratycd/video/upload/so_2,e_contrast:-25,e_brightness:18,f_jpg,q_auto,w_1600,c_limit/v1788643812/Lucan_Dental_Dashboard_Loop_v2_muted_gvinva.jpg" as string,
+  },
 } as const;
 
 export const cta = {

@@ -21,6 +21,10 @@ model Dentist {
   summary        String
   bio            String[]
   specialities   String[]
+  /// Short chips for the team card, e.g. "Implants", "Oral surgery". Kept separate from
+  /// `specialities`, which are full phrases written for the profile page and are far too
+  /// long to sit in a pill.
+  tags           String[]
   /// Treatment slugs this clinician leads on (content/treatments.ts), for "Your dentist".
   treatments     String[]
   photoUrl       String?
@@ -50,6 +54,34 @@ model PriceItem {
   updatedAt  DateTime @updatedAt
 
   @@map("price_items")
+}
+
+/// Patient testimonials - what someone says about their experience after treatment.
+/// Managed at /admin/testimonials.
+///
+/// consentConfirmed gates public rendering and consentRecordedAt records WHEN the patient
+/// agreed, because "we have consent" with no date is not much of a record if it is ever
+/// questioned. Publishing a patient's words without documented consent is the specific
+/// thing content/stories.ts was written to avoid, so the same rule applies here.
+model Testimonial {
+  id               String    @id @default(cuid())
+  /// First name or initials only, as consented - not a full name.
+  author           String
+  /// Optional area, e.g. "Lucan" - adds context without identifying anyone.
+  area             String?
+  quote            String
+  /// Treatment slug from content/treatments.ts, when the testimonial is about one.
+  treatmentSlug    String?
+  treatmentLabel   String?
+  /// 1-5, optional. Only ever what the patient actually gave.
+  rating           Int?
+  consentConfirmed Boolean   @default(false)
+  consentRecordedAt DateTime?
+  order            Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@map("testimonials")
 }
 
 /// Before/after gallery (Kilmainham-style). consentConfirmed gates public rendering -

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { MobileCtaBar } from "@/components/layout/MobileCtaBar";
-import { WhatsAppBubble } from "@/components/layout/WhatsAppBubble";
+import { EnquiryBot } from "@/components/layout/EnquiryBot";
+import { SocialRail } from "@/components/layout/SocialRail";
 import { Analytics } from "@/components/analytics/Analytics";
 import { JsonLd } from "@/components/ui/Layout";
 import { practiceSchema, websiteSchema } from "@/lib/schema";
@@ -37,7 +38,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 
       <SiteFooter />
       <MobileCtaBar />
-      <WhatsAppBubble />
+      <SocialRail />
+      <EnquiryBot />
       <Analytics />
 
       <JsonLd data={[practiceSchema(rating ?? undefined), websiteSchema()]} />

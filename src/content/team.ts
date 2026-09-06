@@ -22,6 +22,8 @@ export type TeamMember = {
   summary: string;
   bio: string[];
   specialities: string[];
+  /** Short chips shown on the team card - see prisma/schema.prisma. */
+  tags: string[];
   /** Treatment slugs this clinician leads on - powers "Your dentist" on treatment pages. */
   treatments: string[];
   /** Practice-supplied portrait, uploaded via /admin/dentists; null renders an initials avatar. */
@@ -39,6 +41,7 @@ function fromRow(row: {
   summary: string;
   bio: string[];
   specialities: string[];
+  tags: string[];
   treatments: string[];
   photoUrl: string | null;
   registration: string | null;
@@ -54,6 +57,7 @@ function fromRow(row: {
     summary: row.summary,
     bio: row.bio,
     specialities: row.specialities,
+    tags: row.tags,
     treatments: row.treatments,
     photo: row.photoUrl,
     registration: row.registration ?? undefined,
